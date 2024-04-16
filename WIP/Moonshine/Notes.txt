@@ -1,0 +1,409 @@
+Category:Cooking,
+NeedToBeLearn:false,
+CanBeDoneFromFloor:false,
+SkillRequired:Cooking=2,
+OnGiveXP:Recipe.OnGiveXP.Cooking3,
+
+These are the Perks.(Name) specifications for all the level-able skills. Below is the function to add XP to a skill, but instead of a number (25 in this case) it could be substituted for a variable that is the result of a function.
+
+For example, player:getXp():AddXP(Perks.Fitness, );
+
+Fitness      = player:getXp():AddXP(Perks.Fitness, 25);
+Strength     = player:getXp():AddXP(Perks.Strength, 25);
+
+Sprinting    = player:getXp():AddXP(Perks.Sprinting, 25);
+Nimble       = player:getXp():AddXP(Perks.Nimble, 25);
+Sneaking     = player:getXp():AddXP(Perks.Sneak, 25);
+Lightfooted  = player:getXp():AddXP(Perks.Lightfoot, 25);
+
+Axe          = player:getXp():AddXP(Perks.Axe, 25);
+Short Blunt  = player:getXp():AddXP(Perks.SmallBlunt, 25);
+Long Blunt   = player:getXp():AddXP(Perks.Blunt, 25);
+Short Blade  = player:getXp():AddXP(Perks.SmallBlade, 25);
+Long Blade   = player:getXp():AddXP(Perks.LongBlade, 25);
+Spear        = player:getXp():AddXP(Perks.Spear, 25);
+Maintenance  = player:getXp():AddXP(Perks.Maintenance, 25);
+
+Carpentry    = player:getXp():AddXP(Perks.Woodwork, 25);
+Metalworking = player:getXp():AddXP(Perks.MetalWelding, 25);
+Electronics  = player:getXp():AddXP(Perks.Electricity, 25);
+Tailoring    = player:getXp():AddXP(Perks.Tailoring, 25);
+Mechanics    = player:getXp():AddXP(Perks.Mechanics, 25);
+Cooking      = player:getXp():AddXP(Perks.Cooking, 25);
+First Aid    = player:getXp():AddXP(Perks.Doctor, 25);
+Farming      = player:getXp():AddXP(Perks.Farming, 25);
+
+Aiming       = player:getXp():AddXP(Perks.Aiming, 25);
+Reloading    = player:getXp():AddXP(Perks.Reloading, 25);
+
+Trapping     = player:getXp():AddXP(Perks.Trapping, 25);
+Fishing      = player:getXp():AddXP(Perks.Fishing, 25);
+Foraging     = player:getXp():AddXP(Perks.PlantScavenging, 25);
+
+-------------------------------------------------------------------
+
+local zombieKills = player:getZombieKills();
+if zombieKills then
+	-- CODE
+end
+
+
+-- I think this is the method that shows the characters stats
+character:getStats()
+
+---------------------------------------------------------------------------
+-- From --
+\steamapps\common\ProjectZomboid\media\luaexamples\other\recipecode.lua
+
+
+function TastySoup_OnGrab (a, b, c, d, result)
+	player = getPlayer();
+	cookinglevel = player:getPerkLevel(Perks.Cooking);
+	
+	if cookinglevel == 0 then
+		result:setName("Watery Soup");
+		result:setHungChange(result:getHungChange()*0.7);
+	end
+	if cookinglevel == 1 then
+		result:setName("Okay Soup");
+	end
+	if cookinglevel == 2 then
+		result:setName("Nice Soup");
+		result:setHungChange(result:getHungChange()*1.1);
+	end
+	if cookinglevel == 3 then
+		result:setName("Tasty Soup");
+		result:setHungChange(result:getHungChange()*1.3);
+	end
+	if cookinglevel == 4 then
+		result:setName("Delicious Soup");
+		result:setHungChange(result:getHungChange()*1.5);
+	end
+	if cookinglevel == 5 then
+		result:setName("Gourmet Soup");
+		result:setHungChange(result:getHungChange()*2);
+	end
+end
+
+This is just an existing recipe, just copied to see how it works
+
+---------------------------------------------------------------------------
+-- ACCESSING PROFESSIONS AND TRAITS
+
+local profession = player:getDescriptor():getProfession();
+local player = getPlayer();
+	if player:HasTrait("Brave") then
+		-- CODE HERE
+	end
+
+	("Hunter")
+	("Cowardly")
+	("Agoraphobic")
+	("Claustophobic")
+	("Hemophobic")
+	("Pacifist")
+
+if profession == "policeofficer" then
+	-- CODE HERE
+elseif profession == "fireofficer" then
+	-- CODE HERE
+elseif profession == "parkranger" then
+	-- CODE HERE
+elseif profession == "securityguard" then
+	-- CODE HERE
+elseif profession == "doctor" then
+	-- CODE HERE
+elseif profession == "nurse" then
+	-- CODE HERE
+
+---------------------------------------------------------------------------
+
+function Recipe.OnCreate.StressTest (items, result, player)
+	local stats = character:getStats():getStress()
+	stats = stats - 50
+	if stats < 0 then
+		character:getStats():setStress(0);
+	end
+end
+
+---------------------------------------------------------------------------
+
+if character:getStats():getStress() < 0 then
+	character:getStats():setStress(0);
+end
+
+-- I can use this to see if stress is less than 0, then set it back to 0
+
+stats = stats - 25;
+	
+function Recipe.OnCreate.StressTest25(items, result, player)
+	local stats = character:getStats():getStress()
+	character:getStats():setStress(stats - 0.25);
+	if stats < 0 then
+		character:getStats():setStress(0);
+	end
+end
+
+
+
+
+-- From Rugged Recipes mod, adds items to inventory
+function Recipe.OnCreate.OpenJarGetLid (items, result, player)	
+  local inv = player:getInventory();	
+  inv:AddItem("Base.EmptyJar");	
+  inv:AddItem("Base.JarLid");	
+end
+
+-- This goes on the item file
+Tags = SewingNeedle,
+
+-- This is a list of the player stats
+-- player:getStress():setStress()
+-- Should be a number between 0 and 1
+
+-- getStress()           -- setStress(float stress)
+-- getFatigue()          -- setFatigue(float fatigue)
+-- getEndurance()        -- setEndurance(float endurance)
+-- getBoredom()          -- setBoredom(float boredom)
+-- getThirst()           -- setThirst(float thirst)
+-- getPanic()            -- setPanic(float Panic)
+-- getHunger()           -- setHunger(float hunger)
+
+-- The above come after the getStats(); function
+-- Not sure about unhappiness, think it's tied to player:getBodyDamage()
+
+-- getUnhappynessLevel() -- setUnhappynessLevel(float UnhappynessLevel) -- DOWN
+
+
+-- BE CAREFUL!! Mixing these up in recipes prevents them from functioning correctly
+-- OnCreate requires (items, result, player)
+-- OnGiveXP requires (recipe, ingredients, result, player)
+
+function Recipe.OnCreate.StressTest25(items, result, player)
+	local stats = player:getStats():getStress()
+	player:getStats():setStress(stats - 0.25);
+	if stats < 0 then
+		player:getStats():setStress(0);
+	end
+end
+
+
+-- A list of tags I know
+
+Recipe.GetItemTypes.FishMeat(scriptItems)
+Recipe.GetItemTypes.Rice(scriptItems)
+Recipe.GetItemTypes.CanOpener(scriptItems)
+Recipe.GetItemTypes.Hammer(scriptItems)
+Recipe.GetItemTypes.Saw(scriptItems)
+Recipe.GetItemTypes.Screwdriver(scriptItems)
+Recipe.GetItemTypes.DullKnife(scriptItems)
+Recipe.GetItemTypes.SharpKnife(scriptItems)
+Recipe.GetItemTypes.Scissors(scriptItems)
+Recipe.GetItemTypes.Sledgehammer(scriptItems)
+Recipe.GetItemTypes.StartFire(scriptItems)
+Recipe.GetItemTypes.WeldingMask(scriptItems)
+Recipe.GetItemTypes.Glue(scriptItems)
+Recipe.GetItemTypes.Fork(scriptItems)
+Recipe.GetItemTypes.Corkscrew(scriptItems)
+Recipe.GetItemTypes.Disinfectant(scriptItems)
+Recipe.GetItemTypes.Egg(scriptItems)
+Recipe.GetItemTypes.GasMask(scriptItems)
+Recipe.GetItemTypes.HazmatSuit(scriptItems)
+Recipe.GetItemTypes.Liquor(scriptItems)
+Recipe.GetItemTypes.Milk(scriptItems)
+Recipe.GetItemTypes.MortarPestle(scriptItems)
+Recipe.GetItemTypes.Petrol(scriptItems)
+Recipe.GetItemTypes.Razor(scriptItems)
+Recipe.GetItemTypes.Spoon(scriptItems)
+Recipe.GetItemTypes.Sugar(scriptItems)
+Recipe.GetItemTypes.Tape(scriptItems)
+Recipe.GetItemTypes.Write(scriptItems)
+Recipe.GetItemTypes.BakingFat(scriptItems)
+Recipe.GetItemTypes.Cheese(scriptItems)
+Recipe.GetItemTypes.Flour(scriptItems)
+Recipe.GetItemTypes.Chocolate(scriptItems)
+Recipe.GetItemTypes.BrokenGlass(scriptItems)
+Recipe.GetItemTypes.SewingNeedle(scriptItems)
+Recipe.GetItemTypes.Oil(scriptItems)
+Recipe.GetItemTypes.PizzaSauce(scriptItems)
+
+
+-- ZombRand(x,y) generates a random number starting at x and ending 1 digit before y, I believe
+-- ZombRand(0,100) is an example is the below function, that should always be 0 through and including 99, but never 100
+-- ZombRand(3) is also shown on the PZWiki as a function, so it should be a number between 0 and 3? (i.e. 25% chance - 0, 1, 2, or 3)
+
+-- This function is in the game, it’s to dismantle a radio, just shows some of the various functions and ways it works, namely how you can dictate what items the player receives based on their skill level (‘success’ variable). Which is badass as fuck
+
+function Recipe.OnCreate.DismantleRadio(items, result, player, selectedItem)
+    local success = 50 + (player:getPerkLevel(Perks.Electricity)*5);
+    for i=1,ZombRand(1,4) do
+        local r = ZombRand(1,4);
+        if r==1 then
+            player:getInventory():AddItem("Base.ElectronicsScrap");
+        elseif r==2 then
+            player:getInventory():AddItem("Radio.ElectricWire");
+        elseif r==3 then
+            player:getInventory():AddItem("Base.Aluminum");
+        end
+    end
+    if ZombRand(0,100)<success then
+        player:getInventory():AddItem("Base.Amplifier");
+    end
+    if ZombRand(0,100)<success then
+        player:getInventory():AddItem("Base.LightBulb");
+    end
+    if ZombRand(0,100)<success then
+        player:getInventory():AddItem("Radio.RadioReceiver");
+    end
+    --if selectedItem then
+        --print("Main item "..selectedItem:getName());
+    --end
+    for i=1,items:size() do
+        local item = items:get(i-1)
+        if instanceof(item, "Radio") then
+            item:getDeviceData():getBattery(player:getInventory())
+            item:getDeviceData():getHeadphones(player:getInventory())
+            break
+        end
+    end
+end
+
+-- for loop starts with i as variable 1, then iterates to 2, then 3, etc
+-- duration is items:size() which I'm guessing is an array, so it's checking its length
+-- do just means to run the function?? I guess?
+-- local is creating a variable
+-- item is a new variable, which is 'items:get(i-1)'
+-- 3 items long would be 0, then 1, then 2 (0 based index) so the loop would run 3 times and plug in (0,1,2) as variables each time incrementally
+
+This is a function I can use to make a recipe give me multiple things
+(Though this needs tested cause it gives 5 lollipops and then calls this function)
+(It was tested, works exactly as I thought)
+
+-- The candy package recipe file runs this as well
+OnCreate:Recipe.OnCreate.OpenCandyPackage,
+
+function Recipe.OnCreate.OpenCandyPackage(items, result, player)
+    player:getInventory():AddItem("Base.MintCandy");
+    player:getInventory():AddItem("Base.MintCandy");
+    player:getInventory():AddItem("Base.MintCandy");
+    player:getInventory():AddItem("Base.MintCandy");
+    player:getInventory():AddItem("Base.MintCandy");
+    player:getInventory():AddItem("Base.MintCandy");
+end
+
+
+-- Another function from recipes to give you back the bowl
+function Recipe.OnCreate.PutCakeBatterInBakingPan(items,result,player)
+    player:getInventory():AddItem("Base.Bowl");
+end
+
+---------------
+Animation Nodes
+---------------
+
+AnimNode:BuildLow,
+AnimNode:SawLog,
+AnimNode:VehicleWorkOnTire,
+AnimNode:Disassemble,
+
+
+-- Category is where it shows in the crafting menu
+
+-----------------------------
+XP Increase Function Checking
+-----------------------------
+
+_character:getXp():AddXP(pfPerk, xpAmount);
+_character:getXp():AddXP(Cooking, 20);
+
+------------------------------------
+Skills Commonly Required For Recipes
+------------------------------------
+
+SkillRequired:Tailoring=2;Aiming=1,
+SkillRequired:MetalWelding=2,
+SkillRequired:Woodwork=1,
+SkillRequired:Electricity=2,
+SkillRequired:Trapping=1,
+
+---------------------------
+Categories For Some Recipes
+---------------------------
+
+Category:Survivalist,
+Category:Carpentry,
+Category:Electrical,
+
+-- Haven’t tested them all, don’t know formal names of all of them
+
+------------------
+Sounds For Recipes
+------------------
+
+Sound:BreakGlassItem,
+Sound:Hammering,
+Sound:PZ_Hammer,
+Sound:Sawing,
+Sound:EmptyPan,
+Sound:OpenCannedFood,
+Sound:PageFlipBook,
+Sound:Dismantle,
+
+----------------------
+Tool Using For Recipes
+----------------------
+
+keep [Recipe.GetItemTypes.Saw],
+keep [Recipe.GetItemTypes.Write],
+
+
+-- Is on the generator item file
+RequiresEquippedBothHands = true,
+MetalValue = 500,
+
+-- These are in recipe files, used to notate what's in their hands during animation
+Prop1:Source=3,
+Prop2:Log,
+
+-- Is on the bandaid item file, still not 100% what dictates a medicine or how to create medicines and decide what they do
+DisplayCategory = FirstAid,
+Type = Normal,
+CanBandage = true,
+BandagePower = 1.5,
+
+
+-- Is on alcoholic drinks
+Alcoholic = TRUE,
+
+-- Old test recipe
+
+recipe Make Butterknife
+	{
+		keep [Recipe.GetItemTypes.Hammer]/Sledgehammer,
+		LetterOpener/ScrapMetal=3/Fork/Spoon,
+			
+		Result:ButterKnife,
+		Time:200.0,
+		Sound:PZ_Hammer,
+		Category:Metalwork,
+		NeedToBeLearn:false,
+		CanBeDoneFromFloor:true,
+		SkillRequired:MetalWelding=2,
+		OnGiveXP:Recipe.OnGiveXP.MetalWelding5,
+	}
+
+-- This recipe is saved in my own mod, but lets you use items from other mods by addressing them with the right name. Not certain if other lines of code are required to integrate them between each other. But I don’t think they are.
+
+recipe Make Beer
+{
+	SFWheat=2,
+	Water=1,
+
+	Result:BeerCan,
+	Time:20.0,
+	Category:Cooking,
+	OnGiveXP:Recipe.OnGiveXP.Cooking8,
+	NeedToBeLearn:false,
+	CanBeDoneFromFloor:true,
+}
+

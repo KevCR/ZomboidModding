@@ -1,0 +1,1686 @@
+module KxMOONSHINE{
+    imports
+    {
+        Base
+    }
+
+    recipe Make Moonshine Still {
+		Base.Pot,
+        Base.Kettle,
+        MetalPipe=2,
+		ScrapMetal=3,
+		BlowTorch=7,
+		keep WeldingMask,
+		Result:KxMOONSHINE.Still,
+		SkillRequired:MetalWelding=3,
+		OnGiveXP:Recipe.OnGiveXP.MetalWelding25,
+		OnCreate:Recipe.OnCreate.SteamGenerator,
+		NeedToBeLearn:false,
+		Category:Welding,
+		Time:800,
+	}
+
+    recipe Harvest Yeast
+	{
+       KxMOONSHINE.KxYeastyPeach/KxMOONSHINE.KxYeastyPineapple/KxMOONSHINE.KxYeastyCherry/KxMOONSHINE.KxYeastyWatermelonSliced/KxMOONSHINE.KxYeastyWatermelonSmashed/KxMOONSHINE.KxYeastyGrapes/KxMOONSHINE.KxYeastyOrange/KxMOONSHINE.KxYeastyApple/KxMOONSHINE.KxYeastyBanana/KxMOONSHINE.KxYeastyGrapefruit/KxMOONSHINE.KxYeastyPear/KxMOONSHINE.KxYeastyMango/KxMOONSHINE.KxYeastyLemon/KxMOONSHINE.KxYeastyLime/KxMOONSHINE.KxYeastyBerryBlack/KxMOONSHINE.KxYeastyBerryBlue/KxMOONSHINE.KxYeastyBerryGeneric1/KxMOONSHINE.KxYeastyBerryGeneric2/KxMOONSHINE.KxYeastyBerryGeneric3/KxMOONSHINE.KxYeastyBerryGeneric4/KxMOONSHINE.KxYeastyBerryGeneric5/KxMOONSHINE.KxYeastyBeautyBerry/KxMOONSHINE.KxYeastyHollyBerry/KxMOONSHINE.KxYeastyWinterBerry,
+	   keep [Recipe.GetItemTypes.SharpKnife]/[Recipe.GetItemTypes.Saw]/Axe/HandAxe/AxeStone/WoodAxe/MeatCleaver,
+	   Result:Yeast,
+	   /*OnCreate:Recipe.OnCreate.SliceWatermelon,*/
+	   Time:70.0,
+	   Category:Cooking,
+	   OnGiveXP:Recipe.OnGiveXP.Cooking3,
+       AllowRottenItem:false,
+	}
+
+    recipe Prime Fruit for Yeast Cultivation
+    {
+       Peach/Pineapple/Cherry/WatermelonSliced/WatermelonSmashed/Grapes/Orange/Apple/Banana/Grapefruit/Pear/Mango/Lemon/Lime/BerryBlack/BerryBlue/BerryGeneric1/BerryGeneric2/BerryGeneric3/BerryGeneric4/BerryGeneric5/BeautyBerry/HollyBerry/WinterBerry,
+	   keep [Recipe.GetItemTypes.SharpKnife]/[Recipe.GetItemTypes.Saw]/Axe/HandAxe/AxeStone/WoodAxe/MeatCleaver,
+       Water=2,
+	   Result:KxYeastCulture,
+	   /*OnCreate:Recipe.OnCreate.SliceWatermelon,*/
+       Sound:PZ_FoodSlicing,
+	   Time:70.0,
+	   Category:Cooking,
+	   OnGiveXP:Recipe.OnGiveXP.Cooking3,
+       AllowRottenItem:false,
+	}
+
+
+
+/**** ALCOHOL ****/
+    item BrandyFull
+	{
+		DisplayName = Brandy Bottle,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.7,
+		Icon = BrandyFull,
+		EvolvedRecipe = Beverage:4;Beverage2:4;HotDrink:4;HotDrinkRed:4;HotDrinkWhite:4;HotDrinkSpiffo:4;HotDrinkTea:4, /*;Soup:4;Stew:4,*/
+		FoodType = Liquor,
+		AlcoholPower = 2,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		EatType = Bourbon,
+		Packaged = FALSE,
+		ReplaceOnUse = WhiskeyEmpty,
+		HungerChange = -20,
+		ThirstChange = -20,
+		UnhappyChange = -10,
+		Calories = 1500,
+		Carbohydrates = 0,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = WhiskeyBottle,
+		WorldStaticModel = WhiskeyBottleGround,
+		Tags = Liquor,
+	}
+
+    item MeadBottle
+	{
+		DisplayName = Mead Bottle,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.4,
+		Icon = BeerBottle,
+		EvolvedRecipe = Soup:9;Stew:9;Beer:9;Beer2:9,
+		FoodType = Beer,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		Packaged = TRUE,
+		ReplaceOnUse = BeerEmpty,
+		HungerChange = -9,
+		ThirstChange = -13,
+		UnhappyChange = -18,
+		Calories = 225,
+		Carbohydrates = 20,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = BeerBottle,
+		WorldStaticModel = BeerBottle,
+		Tags = LowAlcohol,
+		EvolvedRecipeName = Beer,
+	}
+/**** TEMP YEAST CULTURE ****/
+    item KxYeastCulture
+	{
+		DisplayName = Yeast Culture,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Peach,
+        /*EvolvedRecipe = Cake:12;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6;PieSweet:12;Oatmeal:5,*/
+		FoodType = Fruits,
+		UnhappyChange = 10,
+        BoredomChange = 10,
+        HungerChange = -8,
+		ThirstChange = -2,
+		Calories = 58,
+		Carbohydrates = 8,
+		Lipids = 0.38,
+		Proteins = 1.36,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Peach,
+		WorldStaticModel = Peach_Ground,
+	}
+
+/**** Fermented Fruit ****/
+    item KxYeastyPeach
+	{
+		DisplayName = Yeasty Peach,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Peach,
+        /*EvolvedRecipe = Cake:12;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6;PieSweet:12;Oatmeal:5,*/
+		FoodType = Fruits,
+		DaysFresh = 2,
+		DaysTotallyRotten = 4,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -8,
+		ThirstChange = -2,
+		Calories = 58,
+		Carbohydrates = 8,
+		Lipids = 0.38,
+		Proteins = 1.36,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Peach,
+		WorldStaticModel = Peach_Ground,
+	}
+
+    item KxYeastyPineapple
+	{
+		DisplayName = Yeasty Pineapple,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Pineapple,
+        /*EvolvedRecipe = Pizza:12;Cake:12;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;ConeIcecream:4;PieSweet:12;Oatmeal:4,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 6,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -24,
+		ThirstChange = -13,
+		Calories = 452,
+		Carbohydrates = 118.7,
+		Lipids = 1.09,
+		Proteins = 4.89,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Pineapple_Ground,
+	}
+
+	item KxYeastyCherry
+	{
+		DisplayName = Yeasty Cherry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Cherry,
+		/*EvolvedRecipe = Cake:3;FruitSalad:3;Pancakes:3;Waffles:3;Muffin:3;ConeIcecream:3;PieSweet:3;Oatmeal:5,*/
+		FoodType = Fruits,
+		DaysFresh = 2,
+		DaysTotallyRotten = 4,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -3,
+		ThirstChange = -1,
+		Calories = 5,
+		Carbohydrates = 1.31,
+		Lipids = 0,
+		Proteins = 0.09,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Red,
+		WorldStaticModel = Cherry_Ground,
+	}
+
+    item KxYeastyWatermelonSliced
+	{
+		DisplayName = Yeasty Watermelon Slice,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = WatermelonSliced,
+		/*EvolvedRecipe = Salad:6;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 4,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -6,
+		ThirstChange = -20,
+		Calories = 135.5,
+		Carbohydrates = 34.11,
+		Lipids = 0.67,
+		Proteins = 2.75,
+		CustomEatSound = EatingFruit,
+		StaticModel = MelonSlice,
+		WorldStaticModel = WaterMelonSlice_Ground,
+		EvolvedRecipeName = Watermelon,
+	}
+
+	item KxYeastyWatermelonSmashed
+	{
+		DisplayName = Yeasty Watermelon Chunks,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.6,
+		Icon = WatermelonSmashed,
+		/*EvolvedRecipe = Salad:12;FruitSalad:12;Pancakes:12;Waffles:12;Muffin:12,*/
+		FoodType = Fruits,
+		DaysFresh = 2,
+		DaysTotallyRotten = 3,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -12,
+		ThirstChange = -25,
+		Calories = 271,
+		Carbohydrates = 68.2,
+		Lipids = 1.35,
+		Proteins = 5.51,
+		CustomEatSound = EatingFruit,
+		StaticModel = MelonSlice,
+		WorldStaticModel = WaterMelonChunks_Ground,
+	}
+
+	item KxYeastyGrapes
+	{
+		DisplayName = Yeasty Grapes,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Grapes,
+		/*EvolvedRecipe = Cake:15;FruitSalad:15;Pancakes:15;Waffles:15;Muffin:15;Salad:5,*/
+		FoodType = Fruits,
+		DaysFresh = 2,
+		DaysTotallyRotten = 4,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -15,
+		ThirstChange = -5,
+		Calories = 62,
+		Carbohydrates = 15.78,
+		Lipids = 0.32,
+		Proteins = 0.58,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Grapes_Ground,
+		EvolvedRecipeName = Grape,
+	}
+
+	item KxYeastyOrange
+	{
+		DisplayName = Yeasty Orange,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Orange,
+		/*EvolvedRecipe = Cake:12;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6;PieSweet:12;Salad:6,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -12,
+		ThirstChange = -20,
+		ThirstChange = -8,
+		Calories = 65,
+		Carbohydrates = 16.27,
+		Lipids = 0.3,
+		Proteins = 1,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Orange,
+		WorldStaticModel = Orange_Ground,
+	}
+
+	item KxYeastyApple
+	{
+		DisplayName = Yeasty Apple,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Apple,
+		/*EvolvedRecipe = Cake:16;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;PieSweet:16;Oatmeal:4;Salad:8,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -16,
+		ThirstChange = -7,
+		Calories = 95,
+		Carbohydrates = 25.13,
+		Lipids = 0.31,
+		Proteins = 0.47,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Red,
+		WorldStaticModel = Apple_Ground,
+	}
+
+	item KxYeastyBanana
+	{
+		DisplayName = Yeasty Banana,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Banana,
+		/*EvolvedRecipe = Bread:16;Cake:16;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;ConeIcecream:4;PieSweet:16;Oatmeal:4;Sandwich:8;Sandwich Baguette:8,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 4,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -16,
+		ThirstChange = -5,
+		Calories = 105,
+		Carbohydrates = 26.95,
+		Lipids = 0.39,
+		Proteins = 1.29,
+		CustomEatSound = EatingMushy,
+		StaticModel = CylinderFood_Yellow,
+		WorldStaticModel = Banana_Ground,
+	}
+
+    item KxYeastyGrapefruit
+	{
+		DisplayName = Yeasty Grapefruit,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Grapefruit,
+		/*EvolvedRecipe = Salad:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -20,
+		ThirstChange = -50,
+		Calories = 15,
+		Carbohydrates = 101.11,
+		Lipids = 3.78,
+		Proteins = 17.56,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Grapefruit_Ground,
+	}
+
+    item KxYeastyPear
+	{
+		DisplayName = Yeasty Pear,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Pear,
+		/*EvolvedRecipe = Cake:8;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;PieSweet:8;Oatmeal:4;Salad:8,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -16,
+		ThirstChange = -7,
+		Calories = 75,
+		Carbohydrates = 20.13,
+		Lipids = 0.21,
+		Proteins = 0.27,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Pear_Ground,
+	}
+
+    item KxYeastyMango
+	{
+		DisplayName = Yeasty Mango,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Mango,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;PieSweet:10;Oatmeal:5,*/
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 7,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -20,
+		ThirstChange = -13,
+		Calories = 252,
+		Carbohydrates = 78.7,
+		Lipids = 1.09,
+		Proteins = 3.89,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Mango_Ground,
+	}
+
+    item KxYeastyLemon
+	{
+		DisplayName = Yeasty Lemon,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Lemon,
+		/*EvolvedRecipe = HotDrink:2;HotDrinkRed:2;HotDrinkWhite:2;HotDrinkSpiffo:2;HotDrinkTea:2;Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;PieSweet:5;Stir fry Griddle Pan:5;Stir fry:5;Soup:10;Beverage:2;Beverage2:2;Beer:2;Beer2:2;Taco:2;Burrito:2,*/
+		FoodType = Citrus,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -5,
+		Calories = 17,
+		Carbohydrates = 5.41,
+		Lipids = 0.17,
+		Proteins = 0.64,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Yellow,
+		WorldStaticModel = Lemon_Ground,
+		Tags = HerbalTea,
+	}
+
+    item KxYeastyLime
+	{
+		DisplayName = Yeasty Lime,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Lime,
+		/*EvolvedRecipe = HotDrink:2;HotDrinkRed:2;HotDrinkWhite:2;HotDrinkSpiffo:2;HotDrinkTea:2;Cake:5;FruitSalad:2;Pancakes:2;Waffles:2;Muffin:5;PieSweet:5;Stir fry Griddle Pan:5;Stir fry:5;Soup:10;Beverage:2;Beverage2:2;Beer:2;Beer2:2;Taco:2;Burrito:2,*/
+		FoodType = Citrus,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -5,
+		Calories = 17,
+		Carbohydrates = 5.41,
+		Lipids = 0.17,
+		Proteins = 0.64,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Yellow,
+		WorldStaticModel = Lime_Ground,
+		Tags = HerbalTea,
+	}
+
+	item KxYeastyBerryBlack
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryBlack,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryBlack,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryBlue
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryBlue,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryBlue,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryGeneric1
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric1,
+		/*EvolvedRecipe = Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;ConeIcecream:5;PieSweet:5;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -5,
+		ThirstChange = -1,
+		Calories = 12,
+		Carbohydrates = 3,
+		Lipids = 0,
+		Proteins = 2,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric1,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryGeneric2
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric2,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric2,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryGeneric3
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric3,
+		/*EvolvedRecipe = Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;ConeIcecream:5;PieSweet:5;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -5,
+		ThirstChange = -1,
+		Calories = 8,
+		Carbohydrates = 3,
+		Lipids = 0,
+		Proteins = 2,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric3,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryGeneric4
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric4,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric4,
+		EvolvedRecipeName = Berry,
+	}
+
+	item KxYeastyBerryGeneric5
+	{
+		DisplayName = Yeasty Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric5,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric5,
+		EvolvedRecipeName = Berry,
+	}
+
+    item KxYeastyBeautyBerry
+	{
+		DisplayName = Yeasty Beauty Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BeautyBerries,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BeautyBerries_Ground,
+	}
+
+    item KxYeastyHollyBerry
+	{
+		DisplayName = Yeasty Holly Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = HollyBerries,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = HollyBerries_Ground,
+	}
+
+    item KxYeastyWinterBerry
+	{
+		DisplayName = Yeasty Winter Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = Winterberries,
+		/*EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,*/
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 3,
+		DaysTotallyRotten = 5,
+		UnhappyChange = 5,
+        BoredomChange = 5,
+        HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = WinterBerries_Ground,
+	}
+}
+
+/************* BASE : FRUITS *********************/
+    item Peach
+	{
+		DisplayName = Peach,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Peach,
+		EvolvedRecipe = Cake:12;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6;PieSweet:12;Oatmeal:5,
+		FoodType = Fruits,
+		DaysFresh = 5,
+		DaysTotallyRotten = 8,
+		HungerChange = -12,
+		ThirstChange = -5,
+		Calories = 58,
+		Carbohydrates = 14.31,
+		Lipids = 0.38,
+		Proteins = 1.36,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Peach,
+		WorldStaticModel = Peach_Ground,
+	}
+
+    item Pineapple
+	{
+		DisplayName = Pineapple,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Pineapple,
+		EvolvedRecipe = Pizza:12;Cake:12;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;ConeIcecream:4;PieSweet:12;Oatmeal:4,
+		FoodType = Fruits,
+		DaysFresh = 6,
+		DaysTotallyRotten = 14,
+		HungerChange = -24,
+		ThirstChange = -13,
+		Calories = 452,
+		Carbohydrates = 118.7,
+		Lipids = 1.09,
+		Proteins = 4.89,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Pineapple_Ground,
+	}
+
+	item Cherry
+	{
+		DisplayName = Cherry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Cherry,
+		EvolvedRecipe = Cake:3;FruitSalad:3;Pancakes:3;Waffles:3;Muffin:3;ConeIcecream:3;PieSweet:3;Oatmeal:5,
+		FoodType = Fruits,
+		DaysFresh = 4,
+		DaysTotallyRotten = 9,
+		HungerChange = -3,
+		ThirstChange = -1,
+		Calories = 5,
+		Carbohydrates = 1.31,
+		Lipids = 0,
+		Proteins = 0.09,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Red,
+		WorldStaticModel = Cherry_Ground,
+	}
+
+	item Watermelon
+	{
+		DisplayName = Watermelon,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 3,
+		Icon = Watermelon,
+		CantEat = TRUE,
+		/*EvolvedRecipe = Salad:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10,*/
+		FoodType = Fruits,
+		DaysFresh = 6,
+		DaysTotallyRotten = 8,
+		HungerChange = -60,
+		ThirstChange = -140,
+		Calories = 1355,
+		Carbohydrates = 341.11,
+		Lipids = 6.78,
+		Proteins = 27.56,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Watermelon_Ground,
+		Tooltip = Tooltip_item_Watermelon,
+		EvolvedRecipeName = Watermelon,
+	}
+
+	item WatermelonSliced
+	{
+		DisplayName = Watermelon Slice,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = WatermelonSliced,
+		EvolvedRecipe = Salad:6;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6,
+		FoodType = Fruits,
+		DaysFresh = 3,
+		DaysTotallyRotten = 4,
+		HungerChange = -6,
+		ThirstChange = -20,
+		Calories = 135.5,
+		Carbohydrates = 34.11,
+		Lipids = 0.67,
+		Proteins = 2.75,
+		CustomEatSound = EatingFruit,
+		StaticModel = MelonSlice,
+		WorldStaticModel = WaterMelonSlice_Ground,
+		EvolvedRecipeName = Watermelon,
+	}
+
+	item WatermelonSmashed
+	{
+		DisplayName = Watermelon Chunks,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.6,
+		Icon = WatermelonSmashed,
+		EvolvedRecipe = Salad:12;FruitSalad:12;Pancakes:12;Waffles:12;Muffin:12,
+		FoodType = Fruits,
+		DaysFresh = 2,
+		DaysTotallyRotten = 3,
+		HungerChange = -12,
+		ThirstChange = -25,
+		Calories = 271,
+		Carbohydrates = 68.2,
+		Lipids = 1.35,
+		Proteins = 5.51,
+		CustomEatSound = EatingFruit,
+		StaticModel = MelonSlice,
+		WorldStaticModel = WaterMelonChunks_Ground,
+	}
+
+	item Grapes
+	{
+		DisplayName = Grapes,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Grapes,
+		EvolvedRecipe = Cake:15;FruitSalad:15;Pancakes:15;Waffles:15;Muffin:15;Salad:5,
+		FoodType = Fruits,
+		DaysFresh = 5,
+		DaysTotallyRotten = 8,
+		HungerChange = -15,
+		ThirstChange = -5,
+		Calories = 62,
+		Carbohydrates = 15.78,
+		Lipids = 0.32,
+		Proteins = 0.58,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Grapes_Ground,
+		EvolvedRecipeName = Grape,
+	}
+
+	item Orange
+	{
+		DisplayName = Orange,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Orange,
+		EvolvedRecipe = Cake:12;FruitSalad:6;Pancakes:6;Waffles:6;Muffin:6;PieSweet:12;Salad:6,
+		FoodType = Fruits,
+		DaysFresh = 6,
+		DaysTotallyRotten = 9,
+		HungerChange = -12,
+		ThirstChange = -20,
+		ThirstChange = -8,
+		Calories = 65,
+		Carbohydrates = 16.27,
+		Lipids = 0.3,
+		Proteins = 1,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Orange,
+		WorldStaticModel = Orange_Ground,
+	}
+
+	item Apple
+	{
+		DisplayName = Apple,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Apple,
+		EvolvedRecipe = Cake:16;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;PieSweet:16;Oatmeal:4;Salad:8,
+		FoodType = Fruits,
+		DaysFresh = 5,
+		DaysTotallyRotten = 8,
+		HungerChange = -16,
+		ThirstChange = -7,
+		Calories = 95,
+		Carbohydrates = 25.13,
+		Lipids = 0.31,
+		Proteins = 0.47,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Red,
+		WorldStaticModel = Apple_Ground,
+	}
+
+	item Banana
+	{
+		DisplayName = Banana,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Banana,
+		EvolvedRecipe = Bread:16;Cake:16;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;ConeIcecream:4;PieSweet:16;Oatmeal:4;Sandwich:8;Sandwich Baguette:8,
+		FoodType = Fruits,
+		DaysFresh = 5,
+		DaysTotallyRotten = 7,
+		HungerChange = -16,
+		ThirstChange = -5,
+		Calories = 105,
+		Carbohydrates = 26.95,
+		Lipids = 0.39,
+		Proteins = 1.29,
+		CustomEatSound = EatingMushy,
+		StaticModel = CylinderFood_Yellow,
+		WorldStaticModel = Banana_Ground,
+	}
+
+    item Grapefruit
+	{
+		DisplayName = Grapefruit,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Grapefruit,
+		EvolvedRecipe = Salad:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10,
+		FoodType = Fruits,
+		DaysFresh = 6,
+		DaysTotallyRotten = 8,
+		HungerChange = -20,
+		ThirstChange = -50,
+		Calories = 15,
+		Carbohydrates = 101.11,
+		Lipids = 3.78,
+		Proteins = 17.56,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Grapefruit_Ground,
+	}
+
+    item Pear
+	{
+		DisplayName = Pear,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Pear,
+		EvolvedRecipe = Cake:8;FruitSalad:8;Pancakes:8;Waffles:8;Muffin:8;PieSweet:8;Oatmeal:4;Salad:8,
+		FoodType = Fruits,
+		DaysFresh = 5,
+		DaysTotallyRotten = 8,
+		HungerChange = -16,
+		ThirstChange = -7,
+		Calories = 75,
+		Carbohydrates = 20.13,
+		Lipids = 0.21,
+		Proteins = 0.27,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Pear_Ground,
+	}
+
+    item Mango
+	{
+		DisplayName = Mango,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = Mango,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;PieSweet:10;Oatmeal:5,
+		FoodType = Fruits,
+		DaysFresh = 6,
+		DaysTotallyRotten = 14,
+		HungerChange = -20,
+		ThirstChange = -13,
+		Calories = 252,
+		Carbohydrates = 78.7,
+		Lipids = 1.09,
+		Proteins = 3.89,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = Mango_Ground,
+	}
+
+    item Lemon
+	{
+		DisplayName = Lemon,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Lemon,
+		EvolvedRecipe = HotDrink:2;HotDrinkRed:2;HotDrinkWhite:2;HotDrinkSpiffo:2;HotDrinkTea:2;Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;PieSweet:5;Stir fry Griddle Pan:5;Stir fry:5;Soup:10;Beverage:2;Beverage2:2;Beer:2;Beer2:2;Taco:2;Burrito:2,
+		FoodType = Citrus,
+		Spice = true,
+		DaysFresh = 7,
+		DaysTotallyRotten = 9,
+		HungerChange = -10,
+		ThirstChange = -5,
+		Calories = 17,
+		Carbohydrates = 5.41,
+		Lipids = 0.17,
+		Proteins = 0.64,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Yellow,
+		WorldStaticModel = Lemon_Ground,
+		Tags = HerbalTea,
+	}
+
+    item Lime
+	{
+		DisplayName = Lime,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.2,
+		Icon = Lime,
+		EvolvedRecipe = HotDrink:2;HotDrinkRed:2;HotDrinkWhite:2;HotDrinkSpiffo:2;HotDrinkTea:2;Cake:5;FruitSalad:2;Pancakes:2;Waffles:2;Muffin:5;PieSweet:5;Stir fry Griddle Pan:5;Stir fry:5;Soup:10;Beverage:2;Beverage2:2;Beer:2;Beer2:2;Taco:2;Burrito:2,
+		FoodType = Citrus,
+		Spice = true,
+		DaysFresh = 7,
+		DaysTotallyRotten = 9,
+		HungerChange = -10,
+		ThirstChange = -5,
+		Calories = 17,
+		Carbohydrates = 5.41,
+		Lipids = 0.17,
+		Proteins = 0.64,
+		CustomEatSound = EatingFruit,
+		StaticModel = RoundFood_Yellow,
+		WorldStaticModel = Lime_Ground,
+		Tags = HerbalTea,
+	}
+
+	item BerryBlack
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryBlack,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryBlack,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryBlue
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryBlue,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryBlue,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryGeneric1
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric1,
+		EvolvedRecipe = Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;ConeIcecream:5;PieSweet:5;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -5,
+		ThirstChange = -1,
+		Calories = 12,
+		Carbohydrates = 3,
+		Lipids = 0,
+		Proteins = 2,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric1,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryGeneric2
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric2,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric2,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryGeneric3
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric3,
+		EvolvedRecipe = Cake:5;FruitSalad:5;Pancakes:5;Waffles:5;Muffin:5;ConeIcecream:5;PieSweet:5;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -5,
+		ThirstChange = -1,
+		Calories = 8,
+		Carbohydrates = 3,
+		Lipids = 0,
+		Proteins = 2,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric3,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryGeneric4
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric4,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric4,
+		EvolvedRecipeName = Berry,
+	}
+
+	item BerryGeneric5
+	{
+		DisplayName = Berries,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BerryGeneric5,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		OnEat = OnEat_WildFoodGeneric,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BerryGeneric5,
+		EvolvedRecipeName = Berry,
+	}
+
+    item BeautyBerry
+	{
+		DisplayName = Beauty Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = BeautyBerries,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = BeautyBerries_Ground,
+	}
+
+    item HollyBerry
+	{
+		DisplayName = Holly Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = HollyBerries,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = HollyBerries_Ground,
+	}
+
+    item WinterBerry
+	{
+		DisplayName = Winter Berry,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.1,
+		Icon = Winterberries,
+		EvolvedRecipe = Cake:10;FruitSalad:10;Pancakes:10;Waffles:10;Muffin:10;ConeIcecream:5;PieSweet:10;Oatmeal:5,
+		FoodType = Berry,
+		HerbalistType = Berry,
+		DaysFresh = 6,
+		DaysTotallyRotten = 10,
+		HungerChange = -10,
+		ThirstChange = -1,
+		Calories = 23,
+		Carbohydrates = 5,
+		Lipids = 0,
+		Proteins = 4,
+		CustomEatSound = EatingFruit,
+		WorldStaticModel = WinterBerries_Ground,
+	}
+
+    item Yeast
+    {
+        DisplayCategory = Food,
+        Type	            =	        Drainable,
+        UseDelta	        =	        0.2,
+        UseWhileEquipped	=	        FALSE,
+        DisplayName			=		    Yeast,
+        Icon				=			Yeast,
+        Weight				=			0.1,
+        WorldStaticModel = Yeast,
+    }
+
+/********* BASE FOOD : ALCOHOL *************/
+    item WhiskeyFull
+	{
+		DisplayName = Whiskey Bottle,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.7,
+		Icon = WhiskeyFull,
+		EvolvedRecipe = Beverage:4;Beverage2:4;HotDrink:4;HotDrinkRed:4;HotDrinkWhite:4;HotDrinkSpiffo:4;HotDrinkTea:4, /*;Soup:4;Stew:4,*/
+		FoodType = Liquor,
+		AlcoholPower = 2,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		EatType = Bourbon,
+		Packaged = TRUE,
+		ReplaceOnUse = WhiskeyEmpty,
+		HungerChange = -20,
+		ThirstChange = -20,
+		UnhappyChange = -10,
+		Calories = 1500,
+		Carbohydrates = 0,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = WhiskeyBottle,
+		WorldStaticModel = WhiskeyBottleGround,
+		Tags = Liquor,
+	}
+
+    item BeerCan
+	{
+		DisplayName = Beer Can,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.3,
+		Icon = BeerCan,
+		EvolvedRecipe = Soup:8;Stew:8;Beer:9;Beer2:9,
+		FoodType = Beer,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		EatType = popcan,
+		Packaged = TRUE,
+		ReplaceOnUse = BeerCanEmpty,
+		HungerChange = -8,
+		ThirstChange = -13,
+		UnhappyChange = -15,
+		Calories = 160,
+		Carbohydrates = 39,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromCan,
+		StaticModel = BeerCan,
+		WorldStaticModel = BeerCan_Ground,
+		Tags = LowAlcohol;HasMetal,
+		EvolvedRecipeName = Beer,
+		
+	}
+
+	item BeerBottle
+	{
+		DisplayName = Beer Bottle,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 0.4,
+		Icon = BeerBottle,
+		EvolvedRecipe = Soup:9;Stew:9;Beer:9;Beer2:9,
+		FoodType = Beer,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		Packaged = TRUE,
+		ReplaceOnUse = BeerEmpty,
+		HungerChange = -9,
+		ThirstChange = -13,
+		UnhappyChange = -16,
+		Calories = 170,
+		Carbohydrates = 39,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = BeerBottle,
+		WorldStaticModel = BeerBottle,
+		Tags = LowAlcohol,
+		EvolvedRecipeName = Beer,
+	}
+
+	item Wine
+	{
+		DisplayName = Chardonnay,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 1,
+		Icon = WineFull,
+		/*EvolvedRecipe = Beverage:4;Beverage2:4;Soup:4;Stew:4;PastaPot:4;PastaPan:4;WineInGlass:4,*/
+		EvolvedRecipe = Beverage:4;Beverage2:4;WineInGlass:4;PastaPot:4;PastaPan:4,
+		FoodType = Wine,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		EatType = Bourbon,
+		Packaged = TRUE,
+		ReplaceOnUse = WineEmpty,
+		HungerChange = -20,
+		ThirstChange = -20,
+		UnhappyChange = -20,
+		Calories = 481,
+		Carbohydrates = 0,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = WhiteWineBottle,
+		WorldStaticModel = WineWhiteGround,
+	}
+
+	item WineWaterFull
+	{
+		DisplayName = Water Bottle,
+		DisplayCategory = Water,
+		Type = Drainable,
+		Weight = 1,
+		Icon = WineEmpty,
+		CanStoreWater = TRUE,
+		EatType = Bourbon,
+		FillFromDispenserSound = GetWaterFromDispenserGlass,
+		FillFromTapSound = GetWaterFromTapGlass,
+		IsCookable = TRUE,
+		IsWaterSource = TRUE,
+		ReplaceOnDeplete = WineEmpty,
+		ReplaceOnUseOn = WaterSource-WineWaterFull,
+		UseDelta = 0.08,
+		UseWhileEquipped = FALSE,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = WhiteWineBottle,
+		WorldStaticModel = WineWhiteGround,
+	}
+
+	item Wine2
+	{
+		DisplayName = Red Wine,
+		DisplayCategory = Food,
+		Type = Food,
+		Weight = 1,
+		Icon = Wine2Full,
+		EvolvedRecipe = Beverage:4;Beverage2:4;HotDrink:4;HotDrinkRed:4;HotDrinkWhite:4;HotDrinkSpiffo:4;HotDrinkTea:4;WineInGlass:4;PastaPot:4;PastaPan:4,
+		/*EvolvedRecipe = Beverage:4;Beverage2:4;HotDrink:4;HotDrinkRed:4;HotDrinkWhite:4;HotDrinkSpiffo:4;HotDrinkTea:4;Soup:4;Stew:4;PastaPot:4;PastaPan:4;WineInGlass:4,*/
+		FoodType = Wine,
+		Alcoholic = TRUE,
+		CantBeFrozen = TRUE,
+		EatType = Bourbon,
+		Packaged = TRUE,
+		ReplaceOnUse = WineEmpty2,
+		HungerChange = -20,
+		ThirstChange = -20,
+		UnhappyChange = -20,
+		Calories = 510,
+		Carbohydrates = 0,
+		Lipids = 0,
+		Proteins = 0,
+		CustomContextMenu = Drink,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = RedWineBottle,
+		WorldStaticModel = WineRedGround,
+	}
+
+/************ BASE: FOOD ITEMS : FILLED WITH WATER *********************/
+    item WhiskeyWaterFull
+	{
+		DisplayName = Water Bottle,
+		DisplayCategory = Water,
+		Type = Drainable,
+		Weight = 0.7,
+		Icon = Whiskey_Water_Full,
+		CanStoreWater = TRUE,
+		EatType = Bourbon,
+		FillFromDispenserSound = GetWaterFromDispenserGlass,
+		FillFromTapSound = GetWaterFromTapGlass,
+		IsCookable = TRUE,
+		IsWaterSource = TRUE,
+		ReplaceOnDeplete = WhiskeyEmpty,
+		ReplaceOnUseOn = WaterSource-WhiskeyWaterFull,
+		UseDelta = 0.08,
+		UseWhileEquipped = FALSE,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = WhiskeyBottle,
+		WorldStaticModel = WhiskeyBottleGround,
+	}
+
+	item BeerWaterFull
+	{
+		DisplayName = Water Bottle,
+		DisplayCategory = Water,
+		Type = Drainable,
+		Weight = 0.4,
+		Icon = BeerBottle,
+		CanStoreWater = TRUE,
+		FillFromDispenserSound = GetWaterFromDispenserGlass,
+		FillFromTapSound = GetWaterFromTapGlass,
+		IsCookable = TRUE,
+		IsWaterSource = TRUE,
+		ReplaceOnDeplete = BeerEmpty,
+		ReplaceOnUseOn = WaterSource-BeerWaterFull,
+		UseDelta = 0.16,
+		UseWhileEquipped = FALSE,
+		CustomEatSound = DrinkingFromBottleGlass,
+		StaticModel = BeerBottle,
+		WorldStaticModel = BeerBottle,
+	}
+
+/********************* BASE: ITEMS *************************/
+    item WhiskeyEmpty
+	{
+	    DisplayCategory = WaterContainer,
+		Weight	=	0.3,
+		CanStoreWater	=	TRUE,
+		Type	=	Normal,
+		DisplayName	=	Empty Bottle,
+		ReplaceOnUseOn	=	WaterSource-WhiskeyWaterFull,
+		Icon	=	WhiskeyEmpty,
+		StaticModel = WhiskeyBottle,
+		WorldStaticModel = WhiskeyBottleGround,
+		Tags = EmptyPetrol,
+		ReplaceTypes = PetrolSource WhiskeyPetrol;WaterSource WhiskeyWaterFull,
+	}
+
+    item WineEmpty
+	{
+	    DisplayCategory = WaterContainer,
+		Weight	=	0.3,
+		CanStoreWater = TRUE,
+		Type	=	Normal,
+		DisplayName	=	Empty Bottle,
+		ReplaceOnUseOn	=	WaterSource-WineWaterFull,
+		Icon	=	WineEmpty,
+		StaticModel = WhiteWineBottle,
+		WorldStaticModel = WineWhiteGround,
+		Tags = EmptyPetrol,
+		ReplaceTypes = PetrolSource WinePetrol;WaterSource WineWaterFull,
+	}
+
+    item WineEmpty2
+	{
+	    DisplayCategory = WaterContainer,
+		Weight	=	0.3,
+		CanStoreWater = TRUE,
+		Type	=	Normal,
+		DisplayName	=	Empty Bottle,
+		ReplaceOnUseOn	=	WaterSource-WineWaterFull,
+		Icon	=	WineEmpty,
+		StaticModel = RedWineBottle,
+		WorldStaticModel = WineRedGround,
+		Tags = EmptyPetrol,
+		ReplaceTypes = PetrolSource WinePetrol;WaterSource WineWaterFull,
+	}
+
+    item BeerEmpty
+    {
+        DisplayCategory = WaterContainer,
+        Weight	=	0.1,
+        CanStoreWater = TRUE,
+        Type	=	Normal,
+        DisplayName	=	Empty Bottle,
+        ReplaceOnUseOn	=	WaterSource-BeerWaterFull,
+        Icon	=	BeerBottle,
+        StaticModel = BeerBottle,
+        WorldStaticModel = BeerBottle,
+    }
+/******************************** BASE: ITEMS : DRAINABLE ****************************/
+    item BucketConcreteFull
+	{
+	    DisplayCategory = Material,
+		Weight	=	10,
+		Type	=	Drainable,
+		UseWhileEquipped	=	FALSE,
+		UseDelta	=	0.25,
+		DisplayName	=	Bucket of Concrete,
+		ReplaceOnDeplete	=	BucketEmpty,
+		ReplaceOnUseOn	=	WaterSource-BucketWaterFull,
+		Icon	=	MetalBucket_Concrete,
+		StaticModel = Bucket,
+		EatType = Bucket,
+		WorldStaticModel = BucketFullConcrete_Ground,
+	}
+
+	item BucketPlasterFull
+	{
+	    DisplayCategory = Material,
+		Weight	=	10,
+		Type	=	Drainable,
+		UseWhileEquipped	=	FALSE,
+		UseDelta	=	0.1,
+		DisplayName	=	Bucket of Plaster,
+		ReplaceOnDeplete	=	BucketEmpty,
+		ReplaceOnUseOn	=	WaterSource-BucketWaterFull,
+		Icon	=	MetalBucket_Plaster,
+		StaticModel = Bucket,
+		EatType = Bucket,
+		WorldStaticModel = BucketFullPlaster_Ground,
+	}
+
+	item BucketWaterFull
+	{
+	    DisplayCategory = Water,
+		IsWaterSource	=	TRUE,
+		Weight	=	4,
+		CanStoreWater	=	TRUE,
+		FillFromDispenserSound = GetWaterFromDispenserMetalBig,
+		FillFromTapSound = GetWaterFromTapMetalBig,
+		Type	=	Drainable,
+		DisplayName	=	Bucket of Water,
+		UseWhileEquipped	=	FALSE,
+		UseDelta	=	0.04,
+		ReplaceOnDeplete	=	BucketEmpty,
+		ReplaceOnUseOn	=	WaterSource-BucketWaterFull,
+		Icon	=	MetalBucket_Water,
+		RainFactor = 1,
+		Tooltip = Tooltip_item_RainFromGround,
+		StaticModel = Bucket,
+		EatType = Bucket,
+		WorldStaticModel = BucketFullWater_Ground,
+		IsCookable = TRUE,
+		Tags = HasMetal,
+	}
+/****************************** NEWITEMS : FILLED WITH PETROL / GASOLINE *********************/
+    item WhiskeyPetrol
+	{
+		DisplayCategory = VehicleMaintenance,
+		Weight	=	0.7,
+		Type	=	Drainable,
+		UseWhileEquipped	=	FALSE,
+		UseDelta	=	1,
+		DisplayName	=	Bottle of Gasoline,
+		Icon	=	WhiskeyBottleGas,
+		ReplaceOnDeplete	=	WhiskeyEmpty,
+		StaticModel = WhiskeyBottleGasoline,
+		WorldStaticModel = WhiskeyBottleGroundGasoline,
+		Tags = Petrol,
+	}	
+	
+	item WinePetrol
+	{
+		DisplayName	=	Bottle of Gasoline,
+		DisplayCategory = VehicleMaintenance,
+		Type = Drainable,
+		Weight = 1,
+		Icon = WineEmpty,
+		ReplaceOnDeplete = WineEmpty,
+		UseDelta = 1,
+		UseWhileEquipped = FALSE,
+		StaticModel = WhiteWineBottle,
+		WorldStaticModel = WineWhiteGround,
+		Tags = Petrol,
+	}
+
+/******************************* BASE:: RECIPES ***************/
+    recipe Make Molotov Cocktail
+    {
+       destroy [Recipe.GetItemTypes.Liquor],
+       RippedSheets/RippedSheetsDirty/DenimStrips/DenimStripsDirty,
+
+       Result:Molotov,
+       Time:50.0,
+       OnTest:Recipe.OnTest.FullLiquor,
+    }
+
+    recipe Make Molotov Cocktail
+    {
+       WineEmpty/WineEmpty2/WhiskeyEmpty/BeerEmpty,
+       RippedSheets/RippedSheetsDirty/DenimStrips/DenimStripsDirty,
+       [Recipe.GetItemTypes.Petrol]=1,
+
+       Result:Molotov,
+       Time:50.0,
+    }
+
+    recipe Make Molotov Cocktail
+    {
+       destroy WinePetrol/WhiskeyPetrol,
+       RippedSheets/RippedSheetsDirty/DenimStrips/DenimStripsDirty,
+
+       Result:Molotov,
+       Time:50.0,
+       OnTest:Recipe.OnTest.FullPetrolBottle,
+    }
+}
+
